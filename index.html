@@ -3,45 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Gestionnaire de tâches - Projet éducatif pour pratiquer Git">
-    <title>Gestionnaire de Tâches</title>
+    <meta name="description" content="Gestionnaire de tâches avancé - Projet éducatif pour pratiquer Git">
+    <title>Task Master</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📝 Gestionnaire de Tâches</h1>
-            <p class="subtitle">Pratiquez Git en améliorant cette application</p>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>Task Master</h1>
+                <p class="subtitle">Architecture modulaire MVVM avancée</p>
+            </div>
         </header>
 
-        <main>
-            <div class="input-section">
-                <input 
-                    type="text" 
-                    id="taskInput" 
-                    class="task-input" 
-                    placeholder="Ajouter une nouvelle tâche..."
-                    aria-label="Entrez votre tâche"
-                >
-                <button id="addBtn" class="add-btn" aria-label="Ajouter la tâche">Ajouter</button>
-            </div>
+        <div class="app-layout">
+            <aside class="sidebar">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-tab="filters">Filtres</button>
+                    <button class="nav-tab" data-tab="analytics">Analytics</button>
+                </div>
+                <div id="filterPanel" class="sidebar-content active"></div>
+                <div id="analyticsPanel" class="sidebar-content"></div>
+            </aside>
 
-            <div class="stats">
-                <p id="taskCount">Tâches totales: 0</p>
-                <p id="completedCount">Complétées: 0</p>
-            </div>
+            <main class="main-content">
+                <section class="input-section">
+                    <div class="input-group">
+                        <input type="text" id="taskInput" class="task-input" placeholder="Ajouter une nouvelle tâche...">
+                        <button id="addBtn" class="btn btn-primary">Ajouter</button>
+                    </div>
+                </section>
 
-            <ul id="taskList" class="task-list" aria-label="Liste des tâches">
-                <li class="empty-state">Aucune tâche pour l'instant. Commencez en en ajoutant une!</li>
-            </ul>
-
-            <footer class="actions">
-                <button id="clearBtn" class="clear-btn" aria-label="Effacer toutes les tâches">Effacer Tout</button>
-                <button id="exportBtn" class="export-btn" aria-label="Exporter les tâches">Exporter</button>
-            </footer>
-        </main>
+                <section class="task-section">
+                    <div class="task-header-bar">
+                        <h2>Mes Tâches</h2>
+                        <div class="task-actions-bar">
+                            <button id="exportBtn" class="btn btn-secondary">Exporter</button>
+                            <button id="importBtn" class="btn btn-secondary">Importer</button>
+                            <button id="clearBtn" class="btn btn-danger">Effacer</button>
+                        </div>
+                    </div>
+                    <ul id="taskList" class="task-list"></ul>
+                </section>
+            </main>
+        </div>
     </div>
 
-    <script src="main.js"></script>
+    <!-- Models -->
+    <script src="js/models/Task.js"></script>
+    <script src="js/models/Category.js"></script>
+    <script src="js/models/Analytics.js"></script>
+
+    <!-- Services -->
+    <script src="js/services/StorageService.js"></script>
+    <script src="js/services/TaskService.js"></script>
+    <script src="js/services/FilterService.js"></script>
+
+    <!-- Utils -->
+    <script src="js/utils/events.js"></script>
+    <script src="js/utils/validators.js"></script>
+    <script src="js/utils/helpers.js"></script>
+
+    <!-- Controller -->
+    <script src="js/controllers/AppController.js"></script>
+
+    <!-- Views -->
+    <script src="js/views/TaskListView.js"></script>
+    <script src="js/views/AnalyticsView.js"></script>
+    <script src="js/views/FilterView.js"></script>
+
+    <!-- Main -->
+    <script src="js/main.js"></script>
 </body>
 </html>
