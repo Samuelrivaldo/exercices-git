@@ -3,76 +3,448 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Gestionnaire de tâches avancé - Projet éducatif pour pratiquer Git">
-    <title>Task Master</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Task Master - Version Simple</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        .task-section h2 {
+            margin: 20px 0 15px 0;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .task-list {
+            list-style: none;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .task-item:hover {
+            background: #eef2f7;
+            transform: translateX(5px);
+        }
+        
+        .task-item.completed {
+            opacity: 0.6;
+        }
+        
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+        }
+        
+        .task-header {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            gap: 12px;
+        }
+        
+        .task-header input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .task-text {
+            font-size: 15px;
+            color: #333;
+        }
+        
+        .task-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+        
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #95a5a6;
+            font-style: italic;
+        }
+        
+        .stats {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 13px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <div class="header-content">
-                <h1>Task Master</h1>
-                <p class="subtitle">Architecture modulaire MVVM </p>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Task Master</h1>
+            <p>Gestionnaire de tâches</p>
+        </div>
+        
+        <div class="content">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="taskInput" 
+                    placeholder="Ajouter une nouvelle tâche..."
+                    autocomplete="off"
+                >
+                <button id="addBtn" class="btn btn-primary">Ajouter</button>
             </div>
-        </header>
-
-        <div class="app-layout">
-            <aside class="sidebar">
-                <div class="nav-tabs">
-                    <button class="nav-tab active" data-tab="filters">Filtres</button>
-                    <button class="nav-tab" data-tab="analytics">Analytics</button>
+            
+            <div class="task-section">
+                <h2>📝 Mes Tâches</h2>
+                <ul id="taskList" class="task-list">
+                    <li class="empty-state">Aucune tâche - Commencez maintenant!</li>
+                </ul>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="clearBtn" class="btn btn-danger">🗑️ Effacer tout</button>
+                <button id="exportBtn" class="btn btn-secondary">📥 Exporter</button>
+                <button id="importBtn" class="btn btn-secondary">📤 Importer</button>
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="totalCount">0</div>
+                    <div class="stat-label">Total</div>
                 </div>
-                <div id="filterPanel" class="sidebar-content active"></div>
-                <div id="analyticsPanel" class="sidebar-content"></div>
-            </aside>
-
-            <main class="main-content">
-                <section class="input-section">
-                    <div class="input-group">
-                        <input type="text" id="taskInput" class="task-input" placeholder="Ajouter une nouvelle tâche...">
-                        <button id="addBtn" class="btn btn-primary">Ajouter</button>
-                    </div>
-                </section>
-
-                <section class="task-section">
-                    <div class="task-header-bar">
-                        <h2>Mes Tâches</h2>
-                        <div class="task-actions-bar">
-                            <button id="exportBtn" class="btn btn-secondary">Exporter</button>
-                            <button id="importBtn" class="btn btn-secondary">Importer</button>
-                            <button id="clearBtn" class="btn btn-danger">Effacer</button>
-                        </div>
-                    </div>
-                    <ul id="taskList" class="task-list"></ul>
-                </section>
-            </main>
+                <div class="stat">
+                    <div class="stat-value" id="completedCount">0</div>
+                    <div class="stat-label">Complétées</div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Models -->
-    <script src="js/models/Task.js"></script>
-    <script src="js/models/Category.js"></script>
-    <script src="js/models/Analytics.js"></script>
-
-    <!-- Services -->
-    <script src="js/services/StorageService.js"></script>
-    <script src="js/services/TaskService.js"></script>
-    <script src="js/services/FilterService.js"></script>
-
-    <!-- Utils -->
-    <script src="js/utils/events.js"></script>
-    <script src="js/utils/validators.js"></script>
-    <script src="js/utils/helpers.js"></script>
-
-    <!-- Controller -->
-    <script src="js/controllers/AppController.js"></script>
-
-    <!-- Views -->
-    <script src="js/views/TaskListViewFixed.js"></script>
-    <script src="js/views/AnalyticsView.js"></script>
-    <script src="js/views/FilterView.js"></script>
-
-    <!-- Main -->
-    <script src="js/app.js"></script>
+    <script>
+        console.log('✅ Application Task Master en cours de chargement...');
+        
+        // ====== STORAGE ======
+        const STORAGE_KEY = 'tasks_data';
+        
+        function saveTasks(tasks) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+        }
+        
+        function loadTasks() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+        
+        // ====== STATE ======
+        let tasks = loadTasks();
+        
+        // ====== DOM ELEMENTS ======
+        const taskInput = document.getElementById('taskInput');
+        const addBtn = document.getElementById('addBtn');
+        const taskList = document.getElementById('taskList');
+        const clearBtn = document.getElementById('clearBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const importBtn = document.getElementById('importBtn');
+        const totalCount = document.getElementById('totalCount');
+        const completedCount = document.getElementById('completedCount');
+        
+        // ====== RENDER ======
+        function render() {
+            taskList.innerHTML = '';
+            
+            if (tasks.length === 0) {
+                taskList.innerHTML = '<li class="empty-state">Aucune tâche - Commencez maintenant!</li>';
+                totalCount.textContent = '0';
+                completedCount.textContent = '0';
+                return;
+            }
+            
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = 'task-item ' + (task.done ? 'completed' : '');
+                
+                li.innerHTML = `
+                    <div class="task-header">
+                        <input type="checkbox" class="task-checkbox" ${task.done ? 'checked' : ''}>
+                        <span class="task-text">${escapeHtml(task.title)}</span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn-delete">Supprimer</button>
+                    </div>
+                `;
+                
+                // Checkbox toggle
+                li.querySelector('.task-checkbox').onchange = function() {
+                    task.done = this.checked;
+                    saveTasks(tasks);
+                    render();
+                };
+                
+                // Delete button
+                li.querySelector('.btn-delete').onclick = function(e) {
+                    e.preventDefault();
+                    tasks.splice(index, 1);
+                    saveTasks(tasks);
+                    render();
+                };
+                
+                taskList.appendChild(li);
+            });
+            
+            // Update stats
+            const completed = tasks.filter(t => t.done).length;
+            totalCount.textContent = tasks.length;
+            completedCount.textContent = completed;
+        }
+        
+        // ====== ADD TASK ======
+        function addTask() {
+            const title = taskInput.value.trim();
+            if (title) {
+                tasks.push({
+                    id: Date.now(),
+                    title: title,
+                    done: false,
+                    createdAt: new Date().toISOString()
+                });
+                saveTasks(tasks);
+                taskInput.value = '';
+                taskInput.focus();
+                render();
+                console.log('✅ Tâche ajoutée:', title);
+            }
+        }
+        
+        addBtn.onclick = function(e) {
+            e.preventDefault();
+            addTask();
+        };
+        
+        taskInput.onkeypress = function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        };
+        
+        // ====== CLEAR ALL ======
+        clearBtn.onclick = function(e) {
+            e.preventDefault();
+            if (confirm('Êtes-vous sûr de vouloir effacer toutes les tâches?')) {
+                tasks = [];
+                saveTasks(tasks);
+                render();
+                console.log('✅ Toutes les tâches supprimées');
+            }
+        };
+        
+        // ====== EXPORT ======
+        exportBtn.onclick = function(e) {
+            e.preventDefault();
+            const data = {
+                tasks: tasks,
+                exportDate: new Date().toISOString()
+            };
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tasks-' + new Date().toISOString().split('T')[0] + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            console.log('✅ Export réussi');
+        };
+        
+        // ====== IMPORT ======
+        importBtn.onclick = function(e) {
+            e.preventDefault();
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(evt) {
+                const file = evt.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (data.tasks && Array.isArray(data.tasks)) {
+                            tasks = data.tasks;
+                            saveTasks(tasks);
+                            render();
+                            alert('✅ Import réussi! ' + tasks.length + ' tâche(s) importée(s)');
+                            console.log('✅ Import réussi');
+                        } else {
+                            alert('❌ Format de fichier invalide');
+                        }
+                    } catch (error) {
+                        alert('❌ Erreur lors de l\'import: ' + error.message);
+                        console.error('Erreur import:', error);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        };
+        
+        // ====== UTILS ======
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // ====== INIT ======
+        document.addEventListener('DOMContentLoaded', function() {
+            render();
+            taskInput.focus();
+            console.log('✅ Application prête!');
+            console.log('Tâches chargées:', tasks.length);
+        });
+    </script>
 </body>
 </html>
