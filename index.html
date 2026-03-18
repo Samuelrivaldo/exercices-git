@@ -1,14 +1,47 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport"/>
-<link rel="stylesheet" href="style.css">
-<title> Exercice Git </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestionnaire de tâches - Projet éducatif pour pratiquer Git">
+    <title>Gestionnaire de Tâches</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-<script src="main.js"></script>
-<p> Hello world ! </p>
+    <div class="container">
+        <header>
+            <h1>📝 Gestionnaire de Tâches</h1>
+            <p class="subtitle">Pratiquez Git en améliorant cette application</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <input 
+                    type="text" 
+                    id="taskInput" 
+                    class="task-input" 
+                    placeholder="Ajouter une nouvelle tâche..."
+                    aria-label="Entrez votre tâche"
+                >
+                <button id="addBtn" class="add-btn" aria-label="Ajouter la tâche">Ajouter</button>
+            </div>
+
+            <div class="stats">
+                <p id="taskCount">Tâches totales: 0</p>
+                <p id="completedCount">Complétées: 0</p>
+            </div>
+
+            <ul id="taskList" class="task-list" aria-label="Liste des tâches">
+                <li class="empty-state">Aucune tâche pour l'instant. Commencez en en ajoutant une!</li>
+            </ul>
+
+            <footer class="actions">
+                <button id="clearBtn" class="clear-btn" aria-label="Effacer toutes les tâches">Effacer Tout</button>
+                <button id="exportBtn" class="export-btn" aria-label="Exporter les tâches">Exporter</button>
+            </footer>
+        </main>
+    </div>
+
+    <script src="main.js"></script>
 </body>
- </html>
+</html>
