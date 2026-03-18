@@ -1,9 +1,42 @@
 // Version simplifiee et tests
 
-console.log('App en cours de chargement...');
+console.log('🔍 DIAGNOSTIC - Vérification des dépendances...');
+
+// Diagnostic: Check si les classes sont chargées
+console.log('✓ EventEmitter:', typeof EventEmitter !== 'undefined' ? '✅' : '❌');
+console.log('✓ APP_EVENTS:', typeof APP_EVENTS !== 'undefined' ? '✅' : '❌');
+console.log('✓ Task:', typeof Task !== 'undefined' ? '✅' : '❌');
+console.log('✓ Category:', typeof Category !== 'undefined' ? '✅' : '❌');
+console.log('✓ StorageService:', typeof StorageService !== 'undefined' ? '✅' : '❌');
+console.log('✓ TaskService:', typeof TaskService !== 'undefined' ? '✅' : '❌');
+console.log('✓ FilterService:', typeof FilterService !== 'undefined' ? '✅' : '❌');
+console.log('✓ Validators:', typeof Validators !== 'undefined' ? '✅' : '❌');
+console.log('✓ Helpers:', typeof Helpers !== 'undefined' ? '✅' : '❌');
+console.log('✓ AppController:', typeof AppController !== 'undefined' ? '✅' : '❌');
+console.log('✓ TaskListView:', typeof TaskListView !== 'undefined' ? '✅' : '❌');
+
+if (
+    typeof EventEmitter === 'undefined' ||
+    typeof StorageService === 'undefined' ||
+    typeof TaskService === 'undefined' ||
+    typeof AppController === 'undefined'
+) {
+    console.error('❌ ERREUR: Des dépendances essentielles manquent. Les scripts n\'ont peut-être pas chargé correctement.');
+    console.log('Vérifiez que tous les fichiers sont présents et que le navigateur ne montre pas d\'erreurs 404.');
+    
+    // Mode dégradé - afficher un message d'erreur
+    document.addEventListener('DOMContentLoaded', function() {
+        const taskList = document.getElementById('taskList');
+        if (taskList) {
+            taskList.innerHTML = '<li style="color: red; padding: 20px;"><strong>Erreur de chargement:</strong> Les fichiers JavaScript n\'ont pas pu se charger. Vérifiez la console pour plus de détails.</li>';
+        }
+    });
+    
+} else {
+    console.log('✅ Toutes les dépendances sont chargées. Initialisation de l\'application...');
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('1. DOM charge');
+    console.log('📄 DOM chargé');
     
     try {
         // TEST 1: Recuperer les elements
@@ -11,17 +44,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const addBtn = document.getElementById('addBtn');
         const taskList = document.getElementById('taskList');
         
-        console.log('2. Elements trouves:', taskInput ? 'OUI' : 'NON', addBtn ? 'OUI' : 'NON');
+        console.log('📍 Éléments DOM:', {
+            taskInput: taskInput ? '✅' : '❌',
+            addBtn: addBtn ? '✅' : '❌',
+            taskList: taskList ? '✅' : '❌'
+        });
         
         if (!taskInput || !addBtn || !taskList) {
-            console.error('ERREUR: Elements manquants');
+            console.error('ERREUR: Éléments manquants du DOM');
             return;
         }
         
         // TEST 2: Creer l'app
-        console.log('3. Creation AppController...');
+        console.log('🚀 Création de AppController...');
         const app = new AppController();
-        console.log('4. AppController OK');
+        console.log('✅ AppController initialisé');
         
         // TEST 3: Creer les vues
         console.log('5. Creation vues...');
@@ -153,4 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.innerHTML = '<pre style="color: red; padding: 20px;">' + error.stack + '</pre>';
     }
 });
+
+} // Fin du bloc else les dépendances sont chargées
 
